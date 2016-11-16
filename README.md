@@ -2,7 +2,10 @@
 
 ### A simple module to load a google map with a marker on it.
 
-**Requires:** It requires something to get the LAT, LNG and ZOOMLEVEL, of the marker, and append it to the `map-canvas` element, as data-attibutes.
+**Requirements:**
+To use this you need a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key).
+
+It also requires something to get the LAT, LNG and ZOOMLEVEL, of the marker, and append it to the `map-canvas` element, as data-attibutes.
 
 - Umbraco 7, use something like: https://our.umbraco.org/projects/backoffice-extensions/angulargooglemaps
 - Drupal 7/8, use something like: https://www.drupal.org/project/gmap or https://www.drupal.org/project/simple_gmap
