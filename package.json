@@ -1,0 +1,24 @@
+{
+  "name": "novicell-map",
+  "version": "1.0.0",
+  "description": "A simple component to load a single google map with a marker on it.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Novicell/novicell-map.git"
+  },
+  "keywords": [
+    "novicell",
+    "map",
+    "google"
+  ],
+  "author": "Danni Larsen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Novicell/novicell-map/issues"
+  },
+  "homepage": "https://github.com/Novicell/novicell-map#readme"
+}
