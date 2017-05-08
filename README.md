@@ -1,5 +1,5 @@
 # Novicell Map
-**A simple component to load a single google map with a marker on it.**
+**A simple component to lazy load a single google map with a marker on it.**
 
 ## Usage
 
@@ -48,7 +48,6 @@ scripts: [
 
 Then call the `init`-method with an apikey and a selector, from your `master.js`-file:
 ```javascript
-
 document.addEventListener("DOMContentLoaded", function () {
     novicell.map.init({
         apiKey: 'YOUR API KEY HERE',

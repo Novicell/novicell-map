@@ -1,11 +1,11 @@
 'use strict';
 /**
-* @name Novicell Map
-* @desc A simple plugin to load a map with an optional custom marker
-* @example html: <div id="map-canvas" data-lat="56.109574" data-lng="10.155361" data-zoom="15"></div>
-* @example js: novicell.map.init();
-* @author Danni Larsen - DLA, Mark Lønquist - MLO
-*/
+ * @name Novicell Map
+ * @desc A simple plugin to lazy load a map with an optional custom marker
+ * @example html: <div id="map-canvas" data-lat="56.109574" data-lng="10.155361" data-zoom="15"></div>
+ * @example js: novicell.map.init();
+ * @author Danni Larsen - DLA, Mark Lønquist - MLO
+ */
 
 var novicell = novicell || {};
 novicell.map = novicell.map || new function() {
@@ -15,23 +15,23 @@ novicell.map = novicell.map || new function() {
 
     this.init = function(opts) {
         options = opts;
-        
-        if(!options.selector){
+
+        if (!options.selector) {
             console.error('novicell.maps: selector is not defined!');
             return;
-        };
+        }
 
-        if(!options.apiKey){
+        if (!options.apiKey) {
             console.error('novicell.maps: apiKey is not defined!');
             return;
-        };
+        }
 
         var element = document.querySelector(options.selector);
 
         if (!isLoaded && element && isScrolledIntoView(element)) {
             load();
         } else {
-            document.onscroll = function () {
+            document.onscroll = function() {
                 if (!isLoaded && element && isScrolledIntoView(element)) {
                     load();
                 }
@@ -73,53 +73,55 @@ novicell.map = novicell.map || new function() {
         var markerOptions = {
             position: coordinates,
             map: map
-        }
+        };
 
         // Set icon
-        if(options.hasOwnProperty('icon')) {
-            markerOptions['icon'] = {};
-            if(options.icon.hasOwnProperty('url')) {
-                markerOptions.icon['url'] = options.icon.url;
-            };
-            if(options.icon.hasOwnProperty('size')) {
-                markerOptions.icon['scaledSize'] = new google.maps.Size(options.icon.size.width, options.icon.size.height);
-            };
-        };
+        if (options.hasOwnProperty('icon')) {
+            markerOptions.icon = {};
+            
+            if (options.icon.hasOwnProperty('url')) {
+                markerOptions.icon.url = options.icon.url;
+            }
+
+            if (options.icon.hasOwnProperty('size')) {
+                markerOptions.icon.scaledSize = new google.maps.Size(options.icon.size.width, options.icon.size.height);
+            }
+        }
 
         // Set title
-        if(options.hasOwnProperty('title')) {
+        if (options.hasOwnProperty('title')) {
             markerOptions.title = options.title;
-        };
+        }
 
         // Set marker
         var marker = new google.maps.Marker(markerOptions);
 
         // Set infowindow
-        if(options.hasOwnProperty('infoWindow')) {
+        if (options.hasOwnProperty('infoWindow')) {
             var infoWindow = new google.maps.InfoWindow({
                 content: options.infoWindow
             });
 
             //Add eventlistner for click on marker
-            google.maps.event.addListener(marker, 'click', function () {
+            google.maps.event.addListener(marker, 'click', function() {
                 infoWindow.open(map, marker);
             });
         }
 
         // Recalculate center on resize
-        google.maps.event.addDomListener(window, "resize", function () {
+        google.maps.event.addDomListener(window, "resize", function() {
             var center = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
         });
-    }
+    };
 
     function load() {
         isLoaded = true;
         // Async load the GMaps API and run "initialize"
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = 'https://maps.googleapis.com/maps/api/js?callback=novicell.map.initialize&key='+options.apiKey;
+        script.src = 'https://maps.googleapis.com/maps/api/js?callback=novicell.map.initialize&key=' + options.apiKey;
         document.body.appendChild(script);
     }
 
@@ -130,15 +132,16 @@ novicell.map = novicell.map || new function() {
         return (elemBottom >= 0) && (elemTop <= window.innerHeight);
     }
 
-    function merge_options(obj,src) {
+    function merge_options(obj, src) {
         Object.keys(src).forEach(function(key) {
-            if(obj[key] instanceof Object) {
+            if (obj[key] instanceof Object) {
                 merge_options(obj[key], src[key]);
-            } else {
+            }
+            else {
                 obj[key] = src[key];
             }
-         });
-         return obj;
-     }
+        });
+        return obj;
+    }
 
 }();
