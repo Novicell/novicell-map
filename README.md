@@ -1,4 +1,7 @@
 # Novicell Map
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Novicell/novicell-map.svg)](https://greenkeeper.io/)
+
 **A simple component to lazy load a single google map with a marker on it.**
 
 ## Usage
