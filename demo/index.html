@@ -1,46 +1,112 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
-  <title>Novicell Map demo</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Novicell Map demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
+
 <body>
-  <div id="map-canvas" data-lat="56.109574" data-lng="10.155361" data-zoom="15" style="height:300px;"></div>
+    <div id="map-canvas" data-lat="56.109574" data-lng="10.155361" data-zoom="15" style="height:500px;"></div>
 
-  <script src="../js/novicell.map.js"></script>
+    <script src="../js/novicell.map.js"></script>
 
-  <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function () {
-          novicell.map.init({
-              apiKey: 'YOUR API KEY HERE',
-              selector: '#map-canvas',
-              title: 'Novicell HQ international',              
-              icon: {
-                url: 'test-pin.png',
-                size: {
-                  width: 50,
-                  height: 50
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            // Marker List
+            var markerList = [{
+                    title: 'Århus',
+                    lat: '56.109336',
+                    lng: '10.1511061',
+                    infoWindow: '<div class="marker-content">' +
+                        '<div class="marker-content">' +
+                        '<div class="siteNotice">' +
+                        '</div>' +
+                        '<h1 class="marker-content-header">Novicell HQ</h1>' +
+                        '<div class="marker-content-body">' +
+                        '<p><b>Office hours:</b><br />8.00am – 4.00pm</p>' +
+                        '<p><b>Phone</b><br />+45 8619 0550</p>' +
+                        '<p><b>Email</b><br /><a href="mailto:info@novicell.dk" title="Send us an email">test@novicell.dk</a></p>' +
+                        '<p><strong>Novicell Aarhus</strong><br />Søren Nymarks Vej 6<br />8270 Højbjerg</p>' +
+                        '</div>' +
+                        '</div>'
+                },
+                {
+                    title: 'København',
+                    lat: '55.69971',
+                    lng: '12.5907783',
+                    infoWindow: '<div class="marker-content">' +
+                        '<div class="marker-content">' +
+                        '<div class="siteNotice">' +
+                        '</div>' +
+                        '<h1 class="marker-content-header">Novicell København</h1>' +
+                        '<div class="marker-content-body">' +
+                        '<p><b>Office hours:</b><br />8.00am – 4.00pm</p>' +
+                        '<p><b>Phone</b><br />+45 8619 0550</p>' +
+                        '<p><b>Email</b><br /><a href="mailto:info@novicell.dk" title="Send us an email">test@novicell.dk</a></p>' +
+                        '<p><strong>Novicell København</strong><br />Amerika Pl. 19<br />2100 København</p>' +
+                        '</div>' +
+                        '</div>'
+                },
+                {
+                    title: 'Barcelona',
+                    lat: '41.394891',
+                    lng: '2.189824',
+                    infoWindow: '<div class="marker-content">' +
+                        '<div class="marker-content">' +
+                        '<div class="siteNotice">' +
+                        '</div>' +
+                        '<h1 class="marker-content-header">Novicell Barcelona</h1>' +
+                        '<div class="marker-content-body">' +
+                        '<p><b>Office hours:</b><br />8.00am – 4.00pm</p>' +
+                        '<p><b>Phone</b><br />+45 8619 0550</p>' +
+                        '<p><b>Email</b><br /><a href="mailto:info@novicell.dk" title="Send us an email">test@novicell.dk</a></p>' +
+                        '<p><strong>Novicell Barcelona</strong><br />Carrer de Pallars 84<br />08018 Barcelona</p>' +
+                        '</div>' +
+                        '</div>'
+                },
+                {
+                    title: 'London',
+                    lat: '51.519268',
+                    lng: '-0.110927',
+                    infoWindow: '<div class="marker-content">' +
+                        '<div class="marker-content">' +
+                        '<div class="siteNotice">' +
+                        '</div>' +
+                        '<h1 class="marker-content-header">Novicell London</h1>' +
+                        '<div class="marker-content-body">' +
+                        '<p><b>Office hours:</b><br />8.00am – 4.00pm</p>' +
+                        '<p><b>Phone</b><br />+45 8619 0550</p>' +
+                        '<p><b>Email</b><br /><a href="mailto:info@novicell.dk" title="Send us an email">test@novicell.dk</a></p>' +
+                        '<p><strong>Novicell London</strong><br />14 Grays Inn Road<br />WC1X 8HN London</p>' +
+                        '</div>' +
+                        '</div>'
                 }
-              },
-              infoWindow: '<div class="marker-content">' +
-                '<div class="siteNotice">' +
-                '</div>' +
-                '<h1 class="marker-content-header">Novicell HQ</h1>' +
-                '<div class="marker-content-body">' +
-                '<p><b>Office hours:</b><br />8.00am – 4.00pm</p>' +
-                '<p><b>Phone</b><br />+45 8619 0550</p>' +
-                '<p><b>Email</b><br /><a href="mailto:info@novicell.dk" title="Send us an email">test@novicell.dk</a></p>' +
-                '<p><strong>Novicell Aarhus</strong><br />Søren Nymarks Vej 6<br />8270 Højbjerg</p>' +
-                '</div>' +
-                '</div>',
-              mapOptions: {
-                disableDefaultUI: false,
-                draggable: false,
-                scrollwheel: false,
-                styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "landscape.man_made", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural.landcover", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural.terrain", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.attraction", "elementType": "all", "stylers": [{ "visibility": "on" }, { "weight": "0.64" }] }, { "featureType": "poi.park", "elementType": "all", "stylers": [{ "visibility": "simplified" }, { "lightness": "19" }, { "saturation": "0" }] }, { "featureType": "poi.place_of_worship", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }, { "visibility": "on" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "road.local", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit.line", "elementType": "all", "stylers": [{ "visibility": "simplified" }, { "saturation": "0" }, { "lightness": "41" }, { "gamma": "1.27" }] }, { "featureType": "transit.station.airport", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "transit.station.bus", "elementType": "all", "stylers": [{ "visibility": "on" }, { "hue": "#ff0000" }] }, { "featureType": "transit.station.rail", "elementType": "all", "stylers": [{ "visibility": "on" }, { "saturation": "23" }, { "lightness": "0" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#d3f3f4" }, { "visibility": "on" }] }, { "featureType": "water", "elementType": "labels", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "labels.text", "stylers": [{ "color": "#ffffff" }, { "weight": "0.01" }, { "visibility": "off" }] }]
-              }
-          });
-      });
-  </script>
+            ]
+
+            novicell.map.init({
+                apiKey: 'AIzaSyCKw7im4u7h50OPS4KM5hCC3us-gnlbbTE',
+                selector: '#map-canvas',
+                title: 'Novicell HQ international',
+                icon: {
+                    url: 'test-pin.png',
+                    size: {
+                        width: 50,
+                        height: 50
+                    }
+                },
+                infoWindow: '',
+                mapOptions: {
+                    disableDefaultUI: false,
+                    draggable: true,
+                    scrollwheel: false,
+                    styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "landscape.man_made", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural.landcover", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural.terrain", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.attraction", "elementType": "all", "stylers": [{ "visibility": "on" }, { "weight": "0.64" }] }, { "featureType": "poi.park", "elementType": "all", "stylers": [{ "visibility": "simplified" }, { "lightness": "19" }, { "saturation": "0" }] }, { "featureType": "poi.place_of_worship", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }, { "visibility": "on" }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "road.local", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit.line", "elementType": "all", "stylers": [{ "visibility": "simplified" }, { "saturation": "0" }, { "lightness": "41" }, { "gamma": "1.27" }] }, { "featureType": "transit.station.airport", "elementType": "all", "stylers": [{ "visibility": "on" }] }, { "featureType": "transit.station.bus", "elementType": "all", "stylers": [{ "visibility": "on" }, { "hue": "#ff0000" }] }, { "featureType": "transit.station.rail", "elementType": "all", "stylers": [{ "visibility": "on" }, { "saturation": "23" }, { "lightness": "0" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#d3f3f4" }, { "visibility": "on" }] }, { "featureType": "water", "elementType": "labels", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "labels.text", "stylers": [{ "color": "#ffffff" }, { "weight": "0.01" }, { "visibility": "off" }] }]
+                },
+                markers: markerList
+            });
+        });
+    </script>
+
 </body>
+
 </html>

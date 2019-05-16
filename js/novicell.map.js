@@ -4,16 +4,17 @@
  * @desc A simple plugin to lazy load a map with an optional custom marker
  * @example html: <div id="map-canvas" data-lat="56.109574" data-lng="10.155361" data-zoom="15"></div>
  * @example js: novicell.map.init();
- * @author Danni Larsen - DLA, Mark Lønquist - MLO
+ * @author Danni Larsen - DLA, Mark Lønquist - MLO, Emil Ankersen - EAN
  */
 
 var novicell = novicell || {};
-novicell.map = novicell.map || new function() {
+novicell.map = novicell.map || new function () {
     var self = this;
     var isLoaded = false;
     var options = {};
+    var markers = [];
 
-    this.init = function(opts) {
+    this.init = function (opts) {
         options = opts;
 
         if (!options.selector) {
@@ -30,8 +31,9 @@ novicell.map = novicell.map || new function() {
 
         if (!isLoaded && element && isScrolledIntoView(element)) {
             load();
+
         } else {
-            document.onscroll = function() {
+            document.onscroll = function () {
                 if (!isLoaded && element && isScrolledIntoView(element)) {
                     load();
                 }
@@ -39,28 +41,20 @@ novicell.map = novicell.map || new function() {
         }
     };
 
-    this.initialize = function() {
+    this.initialize = function () {
         var element = document.querySelector(options.selector);
-
-        // Get lat / lng form the map element's attributes
-        var lat = parseFloat(element.getAttribute('data-lat').replace(',', '.')),
-            lng = parseFloat(element.getAttribute('data-lng').replace(',', '.'));
-
-        // Get zoom level
-        var zoomLevelProp = parseInt(element.getAttribute('data-zoom'));
-        var zoomLevel = zoomLevelProp > 0 ? zoomLevelProp : options.mapOptions.zoomLevel;
-
-        // Set cordinates of the map
-        var coordinates = new google.maps.LatLng(lat, lng);
 
         // Set default options
         var defaults = {
             mapOptions: {
-                zoom: zoomLevel,
+                zoom: 10,
                 disableDefaultUI: false,
                 draggable: false,
                 scrollwheel: false,
-                center: coordinates
+                center: {
+                    lat: 55.56265,
+                    lng: 9.760596
+                }
             }
         };
 
@@ -70,49 +64,66 @@ novicell.map = novicell.map || new function() {
         // Set the google maps element
         var map = new google.maps.Map(element, options.mapOptions);
 
+        var icon = {};
+
         var markerOptions = {
-            position: coordinates,
+            icon: icon,
             map: map
         };
-
-        // Set icon
-        if (options.hasOwnProperty('icon')) {
-            markerOptions.icon = {};
-            
-            if (options.icon.hasOwnProperty('url')) {
-                markerOptions.icon.url = options.icon.url;
-            }
-
-            if (options.icon.hasOwnProperty('size')) {
-                markerOptions.icon.scaledSize = new google.maps.Size(options.icon.size.width, options.icon.size.height);
-            }
-        }
-
-        // Set title
-        if (options.hasOwnProperty('title')) {
-            markerOptions.title = options.title;
-        }
-
-        // Set marker
-        var marker = new google.maps.Marker(markerOptions);
 
         // Set infowindow
         if (options.hasOwnProperty('infoWindow')) {
             var infoWindow = new google.maps.InfoWindow({
-                content: options.infoWindow
-            });
-
-            //Add eventlistner for click on marker
-            google.maps.event.addListener(marker, 'click', function() {
-                infoWindow.open(map, marker);
+                content: 'options.infoWindow'
             });
         }
 
-        // Recalculate center on resize
-        google.maps.event.addDomListener(window, "resize", function() {
-            var center = map.getCenter();
-            google.maps.event.trigger(map, "resize");
-            map.setCenter(center);
+        // Set icon
+        if (options.hasOwnProperty('icon')) {
+            if (options.icon.hasOwnProperty('url')) {
+                icon.url = options.icon.url;
+            }
+
+            if (options.icon.hasOwnProperty('size')) {
+                icon.scaledSize = new google.maps.Size(options.icon.size.width, options.icon.size.height);
+            }
+        }
+
+        // Set Markers
+        for (let i = 0; i < options.markers.length; i++) {
+            let marker = options.markers[i];
+
+            let mapMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(parseFloat(marker.lat), parseFloat(marker.lng)),
+                title: marker.title,
+                icon: icon,
+                map: map
+            });
+
+            markers.push(mapMarker);
+
+            // Set infowindow eventhandler
+            google.maps.event.addListener(mapMarker, 'click', function () {
+                infoWindow.setContent(marker.infoWindow);
+                infoWindow.open(map, mapMarker);
+                // Offset top on open infoWindow
+                map.panTo(mapMarker.getPosition());
+                map.panBy(0, -200);
+            });
+        }
+
+        // Fit markers on map
+        var bounds = new google.maps.LatLngBounds();
+        for (let i = 0; i < markers.length; i++) {
+            bounds.extend(markers[i].getPosition());
+        }
+
+        map.fitBounds(bounds);
+        var listener = google.maps.event.addListener(map, "idle", function () {
+            if (map.getZoom() > 16) {
+                map.setZoom(15);
+            }
+            google.maps.event.removeListener(listener);
         });
     };
 
@@ -133,11 +144,10 @@ novicell.map = novicell.map || new function() {
     }
 
     function merge_options(obj, src) {
-        Object.keys(src).forEach(function(key) {
+        Object.keys(src).forEach(function (key) {
             if (obj[key] instanceof Object) {
                 merge_options(obj[key], src[key]);
-            }
-            else {
+            } else {
                 obj[key] = src[key];
             }
         });
