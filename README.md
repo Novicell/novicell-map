@@ -133,5 +133,20 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 ```
 
+## Custom cluster
+
+If you need a custom cluster in your Google Map, there is a library for this:
+https://github.com/gmaps-marker-clusterer/gmaps-marker-clusterer/blob/master/examples/custom-css_example.html
+
+```javascript
+options = {
+cssClass: 'custom-pin'
+};
+```
+
+```javascript
+var markerCluster = new MarkerClusterer(map, markers, options);
+```
+
 ## License
 The Novicell Map is licensed under the MIT Open Source license.
